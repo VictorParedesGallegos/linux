@@ -1,3 +1,4 @@
+"/~.config/nvim/init.vim (no seas gil)
 call plug#begin('~/.local/share/nvim/plugged')
 
 "barra chula :v
