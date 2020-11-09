@@ -1,0 +1,125 @@
+#
+# wm independent hotkeys
+#
+
+# terminal 
+super + Return
+	tilix
+
+# program launcher
+alt + d
+	rofi -show drun
+
+alt + w
+	brave-browser
+
+# hacer que sxhkd recargue sus archivos de configuración:
+super + Escape
+	pkill -USR1 -x sxhkd
+
+#
+# bspwm hotkeys
+#
+
+# salir / reiniciar bspwm
+super + alt + {q,r}
+	bspc {quit,wm -r}
+
+# cerrar y matar
+super + {_,shift + }z
+	bspc node -{c,k}
+
+# alternar entre el diseño de mosaico y monóculo
+super + m
+	bspc desktop -l next
+
+# enviar el nodo marcado más nuevo al nodo preseleccionado más nuevo
+super + y
+	bspc node newest.marked.local -n newest.!automatic.local
+
+# enviar el nodo marcado más nuevo al nodo preseleccionado más nuevo
+super + g
+	bspc node -s biggest
+
+#
+# state/flags
+#
+
+# establecer el estado de la ventana
+super + {t,shift + t,s,f}
+	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+# establecer las banderas del nodo
+super + ctrl + {m,x,y,z}
+	bspc node -g {marked,locked,sticky,private}
+
+#
+# focus/swap
+#
+
+# enfoca el nodo en la dirección dada
+super + {_,shift + }{h,j,k,l}
+	bspc node -{f,s} {west,south,north,east}
+
+# enfoca el nodo para el salto de ruta dado
+super + {p,b,comma,period}
+	bspc node -f @{parent,brother,first,second}
+
+# enfoca el nodo siguiente / anterior en el escritorio actual
+super + {_,shift + }c
+	bspc node -f {next,prev}.local
+
+# enfoca el escritorio siguiente / anterior en el monitor actual
+super + bracket{left,right}
+	bspc desktop -f {prev,next}.local
+
+# enfoca el último nodo / escritorio
+super + {grave,Tab}
+	bspc {node,desktop} -f last
+
+
+# enfoca el nodo más antiguo o más nuevo en el historial de enfoque
+super + {o,i}
+	bspc wm -h off; \
+	bspc node {older,newer} -f; \
+	bspc wm -h on
+
+# enfocar o enviar al escritorio dado
+super + {_,shift + }{1-9,0}
+	bspc {desktop -f,node -d} '^{1-9,10}'
+
+#
+# preselect
+#
+
+# preselect the direction
+super + ctrl + {h,j,k,l}
+	bspc node -p {west,south,north,east}
+
+# preselect the ratio
+super + ctrl + {1-9}
+	bspc node -o 0.{1-9}
+
+# cancel the preselection for the focused node
+super + ctrl + space
+	bspc node -p cancel
+
+# cancel the preselection for the focused desktop
+super + ctrl + shift + space
+	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+
+#
+# move/resize
+#
+
+# expanda una ventana moviendo uno de sus lados hacia afuera
+super + alt + {h,j,k,l}
+	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# contraer una ventana moviendo uno de sus lados hacia adentro
+super + alt + shift + {h,j,k,l}
+	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# mover una ventana flotante
+super + {Left,Down,Up,Right}
+	bspc node -v {-20 0,0 20,0 -20,20 0}
